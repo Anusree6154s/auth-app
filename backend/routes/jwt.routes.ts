@@ -1,13 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import { jwt_secret } from "../config/constants";
 import { redisClient } from "../redis/redisClient";
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-// Google OAuth callback route
 router.post("/headers/signin", (req, res) => {
-  const token = jwt.sign({ username: req.body.username }, jwt_secret);
+  const token = jwt.sign({ username: req.body.username }, jwt_secret, { expiresIn: "1h" });
 
   res.json({ token });
 });
@@ -17,6 +16,7 @@ const verifyJWTHeaders = async (
   res: Response,
   next: NextFunction
 ) => {
+  try {
   const token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
     new Error("Access denied. No token provided");
@@ -29,9 +29,8 @@ const verifyJWTHeaders = async (
     next();
   }
 
-  try {
     // Verify the token
-    const decoded = jwt.verify(token, jwt_secret) as { username: string };
+    const decoded = jwt.verify(token!, jwt_secret) as { username: string };
 
     // Attach decoded user information to the request
     req.user = decoded;
@@ -67,8 +66,7 @@ router.get("/headers/logout", async (req, res) => {
 });
 
 router.post("/cookies/signin", (req, res) => {
-  console.log(req.body);
-  const token = jwt.sign({ username: req.body.username }, jwt_secret);
+  const token = jwt.sign({ username: req.body.username }, jwt_secret, { expiresIn: "1h" });
 
   res.cookie("token", token);
   res.sendStatus(200);
@@ -112,7 +110,7 @@ router.get("/cookies/check-auth", verifyJWTCookies, (req, res) => {
 
 // Logout route
 router.get("/cookies/logout", async (req, res) => {
-  console.log('called')
+  console.log("called");
   try {
     const token = req.cookies.token;
 

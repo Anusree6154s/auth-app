@@ -1,10 +1,12 @@
 import express from "express";
-import backendRoutes from "./backend.routes";
-import frontendRoutes from "./frontend.routes";
+import jwtRoutes from "./jwt.routes";
+import oauthRoutes from "./oauth.routes";
+import passwordlessRoutes from "./passwordless.routes";
 
 const router = express.Router();
 
-router.use('/auth', backendRoutes);
-router.use('/', frontendRoutes);
+router.use("/oauth", oauthRoutes);
+router.use("/jwt", jwtRoutes);
+router.use("/passwordless", passwordlessRoutes);
 
 export default router;

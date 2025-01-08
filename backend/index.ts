@@ -34,7 +34,7 @@ app.use(passport.session()); //initalise sessions for cookie mgmt
 
 configurePassport(); //passport config
 
-app.use(authRoutes); //routes
+app.use('/auth',authRoutes); //routes
 app.use(express.static("../frontend"));
 
 app.listen(8000, () => console.log("Server running on http://localhost:8000"));

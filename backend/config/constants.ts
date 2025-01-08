@@ -24,3 +24,8 @@ export const frontendUrl = process.env.frontendUrl || "";
 export const jwt_secret = process.env.jwt_secret || "";
 
 export const redis_url = process.env.redis_url || "";
+
+export const senders_gmail = process.env.senders_gmail || "";
+export const senders_gmail_app_password =
+  process.env.senders_gmail_app_password || "";
+export const google_refresh_token = process.env.google_refresh_token || "";

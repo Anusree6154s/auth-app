@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
-import "./index.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import "./index.css";
 
 export default function Authenticated() {
   const router = useRouter();
@@ -25,7 +24,7 @@ export default function Authenticated() {
           </div>
         );
     } catch (error) {
-      console.error("Error checking authentication", error);
+      console.error("Error checking authentication:", error);
     }
   };
 
@@ -36,7 +35,7 @@ export default function Authenticated() {
 
       if (data.isLoggedOut) toast.success("Logged Out of OAuth!");
     } catch (error) {
-      console.error("Error checking authentication", error);
+      console.error("Error logging out:", error);
     }
   };
 
@@ -63,7 +62,7 @@ export default function Authenticated() {
           </div>
         );
     } catch (error) {
-      console.error("Error checking authentication", error);
+      console.error("Error checking authentication:", error);
     }
   };
 
@@ -84,7 +83,7 @@ export default function Authenticated() {
         toast.success("Logged Out of JWT Header!");
       }
     } catch (error) {
-      console.error("Error checking authentication", error);
+      console.error("Error logging out:", error);
     }
   };
 
@@ -104,7 +103,7 @@ export default function Authenticated() {
           </div>
         );
     } catch (error) {
-      console.error("Error checking authentication", error);
+      console.error("Error checking authentication:", error);
     }
   };
 
@@ -120,7 +119,55 @@ export default function Authenticated() {
 
       if (data.isLoggedOut) toast.success("Logged Out of JWT Cookies!");
     } catch (error) {
-      console.error("Error checking authentication", error);
+      console.error("Error logging out:", error);
+    }
+  };
+
+  const checkAuthPasswordlessAuth = async () => {
+    const token = localStorage.getItem("token") || "";
+    try {
+      // verify token via header
+      const res = await fetch("/auth/passwordless/check-auth", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (!data.isAuthenticated) router.push("/pages/passwordless");
+      else
+        toast.success(
+          <div className="flex flex-col font-[Poppins]">
+            <span>Already Authenticated!</span>
+            <span className="text-gray-400 text-[10px]">
+              Logout Passwordless Auth to Retry Login
+            </span>
+          </div>
+        );
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+    }
+  };
+
+  const logoutPasswordlessAuth = async () => {
+    const token = localStorage.getItem("token") || "";
+    if (!token) return toast.success("Already Logged Out of Passwordless Auth!");
+    try {
+      const res = await fetch("/auth/passwordless/logout", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (data.isLoggedOut) {
+        localStorage.removeItem("token");
+        toast.success("Logged Out of Passwordless Auth!");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
     }
   };
 
@@ -149,6 +196,12 @@ export default function Authenticated() {
           Logout of JWT Cookie session
         </button>
         <button onClick={checkAuthJWTCookie}>Retry JWT Cookie Login</button>
+        <button onClick={logoutPasswordlessAuth} className="!bg-red-200">
+          Logout of Passwordless Auth session
+        </button>
+        <button onClick={checkAuthPasswordlessAuth}>
+          Retry Passwordless Auth Login
+        </button>
       </div>
       <ToastContainer hideProgressBar={true} />
     </section>

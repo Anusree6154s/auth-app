@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import "./index.css";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import "./index.css";
 
 export default function Jwt() {
   const router = useRouter();
