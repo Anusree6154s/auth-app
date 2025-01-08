@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore certificate and key files
+*.key
+*.crt
+*.csr
+*.pem
+*.p12
+*.der
+
+# Ignore any directory containing certs or keys
+certs/
+keys/
+secrets/

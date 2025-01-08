@@ -1,8 +1,11 @@
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import session from "express-session";
+import fs from "fs";
+import https from "https";
 import passport from "passport";
+import path from "path";
 import { session_secret } from "./config/constants";
 import authRoutes from "./routes";
 import configurePassport from "./util/passportConfig";
@@ -34,7 +37,20 @@ app.use(passport.session()); //initalise sessions for cookie mgmt
 
 configurePassport(); //passport config
 
-app.use('/auth',authRoutes); //routes
-app.use(express.static("../frontend"));
+// Load mTLS certificates for mutual authentication
+const certPath = path.resolve(__dirname, "..");
+console.log(path.resolve(__dirname, "..", "certs"))
+const serverOptions: https.ServerOptions = {
+  key: fs.readFileSync(path.join(certPath, "certs", "server.key")),
+  cert: fs.readFileSync(path.join(certPath, "certs", "server.crt")),
+  ca: fs.readFileSync(path.join(certPath, "certs", "ca.crt")), // CA that signed the client certificate
+  requestCert: true, // Request a client certificate
+  rejectUnauthorized: true, // Reject unauthorized clients
+};
 
-app.listen(8000, () => console.log("Server running on http://localhost:8000"));
+app.use("/auth", authRoutes); //routes
+
+// ths way of server connection for mTLS auth
+https.createServer(serverOptions, app).listen(8443, () => {
+  console.log("Server listening on port 8000");
+});

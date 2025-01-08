@@ -12,7 +12,7 @@ export default function Home() {
         <Link href="/pages/oauth">OAuth</Link>
         <Link href="/pages/jwt">JWT</Link>
         <Link href="/pages/passwordless"> Passwordless</Link>
-        <Link href="/pages/tls"> Mututal TLS </Link>
+        {/* <Link href="/pages/mutual-tls"> Mututal TLS </Link> */}
         <Link href="/pages/oidc"> OpenID Connect </Link>
       </div>
      

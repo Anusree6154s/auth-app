@@ -1,4 +1,3 @@
-
 # Logs
 logs
 *.log
@@ -143,6 +142,7 @@ dist
 *.pem
 *.p12
 *.der
+*.srl
 
 # Ignore any directory containing certs or keys
 certs/
