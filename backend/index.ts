@@ -1,10 +1,11 @@
-import authRoutes from "./routes";
-import express from "express";
-import passport from "passport";
-import session from "express-session";
+import cookieParser from 'cookie-parser';
 import cors from "cors";
-import configurePassport from "./util/passportConfig";
+import express from "express";
+import session from "express-session";
+import passport from "passport";
 import { session_secret } from "./config/constants";
+import authRoutes from "./routes";
+import configurePassport from "./util/passportConfig";
 
 const app = express();
 
@@ -15,6 +16,9 @@ app.use(
     credentials: true, // Allow cookies and credentials
   })
 );
+
+app.use(express.json());
+app.use(cookieParser());
 
 // Configure session middleware
 app.use(

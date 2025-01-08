@@ -1,6 +1,6 @@
 import express from "express";
-import oauthRoutes from "./oauth.routes";
 import jwtRoutes from "./jwt.routes";
+import oauthRoutes from "./oauth.routes";
 
 const router = express.Router();
 

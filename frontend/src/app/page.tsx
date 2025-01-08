@@ -1,7 +1,6 @@
 import Link from "next/link";
 import "./index.css";
 
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
@@ -16,7 +15,7 @@ export default function Home() {
         <Link href="/pages/tls"> Mututal TLS </Link>
         <Link href="/pages/oidc"> OpenID Connect </Link>
       </div>
-      <ToastContainer hideProgressBar={true} />
+     
     </div>
   );
 }
