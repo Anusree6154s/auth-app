@@ -1,0 +1,8 @@
+.buttons > * {
+  background-color: #fde68a; /* cyan-400 */
+  color: #92400e; /* cyan-900 */
+  border-radius: 0.125rem; /* rounded-sm */
+  display: flex;
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+}
