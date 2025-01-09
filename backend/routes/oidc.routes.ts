@@ -4,14 +4,7 @@ import { frontendUrl } from "../config/constants";
 
 const router = express.Router();
 
-router.get(
-  "/login",
-  (req, res, next) => {
-    console.log("called");
-    next();
-  },
-  passport.authenticate("openidconnect")
-);
+router.get("/login", passport.authenticate("openidconnect"));
 
 router.get("/callback", passport.authenticate("openidconnect"), (req, res) => {
   if (req.user) res.redirect(frontendUrl + "/pages/authenticated");

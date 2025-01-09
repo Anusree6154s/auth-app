@@ -35,8 +35,6 @@ router.post("/signup", (req: CustomRequest, res: any): any => {
 const checkAuth = (req: Request, res: Response, next: NextFunction): any => {
   const user = basicAuth(req); // Gets the username and password from the header
 
-  console.log(user)
-
   if (!user || !user.name || !user.pass) {
     return res.status(401).json({ message: "Authentication required" });
   }

@@ -49,7 +49,6 @@ function SearchParamsComponent() {
   const logoutBasicAuth = async () => {
     if (isLoggedOut) return toast.success("Already Logged Out of Basic Auth!");
 
-    console.log(document.cookie);
     const username = searchParams.get("username");
     const password = searchParams.get("password");
     try {

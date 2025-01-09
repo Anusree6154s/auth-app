@@ -110,7 +110,6 @@ router.get("/cookies/check-auth", verifyJWTCookies, (req, res) => {
 
 // Logout route
 router.get("/cookies/logout", async (req, res) => {
-  console.log("called");
   try {
     const token = req.cookies.token;
 
