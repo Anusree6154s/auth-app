@@ -4,9 +4,17 @@ import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "./index.css";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function Authenticated() {
+export default function AuthenticatedPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchParamsComponent />
+    </Suspense>
+  );
+}
+
+function SearchParamsComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoggedOut, setIsLoggedOut] = useState(false);
@@ -321,7 +329,7 @@ export default function Authenticated() {
     }
   };
 
-  const logoutMTLS= async () => {
+  const logoutMTLS = async () => {
     if (isLoggedOut) return toast.success("Already Logged Out of OIDC Auth!");
     try {
       const res = await fetch("/auth/mutualtls/logout");

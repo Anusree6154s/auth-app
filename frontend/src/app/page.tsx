@@ -17,7 +17,6 @@ export default function Home() {
         <Link href="/pages/oidc"> OpenID Connect </Link>
         {/* <Link href="/pages/mutual-tls"> Mututal TLS </Link> */}
       </div>
-     
     </div>
   );
 }
