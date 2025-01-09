@@ -48,7 +48,7 @@ router.get("/check-auth", (req, res) => {
 // Logout route
 router.get("/logout", (req, res) => {
   req.logout((err) => {
-    if (err) return res.status(500).send("Failed to log out");
+    if (err) return res.status(500).json({ message: "Failed to log out" });
     else res.json({ isLoggedOut: true });
   });
 });

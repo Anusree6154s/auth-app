@@ -9,11 +9,13 @@ export default function Home() {
       <h3 className="font-[500] text-xl">Home Page</h3>
       <h4 className=" text-gray-500">Authentication Methods</h4>
       <div className="flex mx-auto w-[60%] flex-col gap-3 buttons">
+        <Link href="/pages/basicauth">Basic Auth</Link>
         <Link href="/pages/oauth">OAuth</Link>
         <Link href="/pages/jwt">JWT</Link>
+        <Link href="/pages/session">Session</Link>
         <Link href="/pages/passwordless"> Passwordless</Link>
-        {/* <Link href="/pages/mutual-tls"> Mututal TLS </Link> */}
         <Link href="/pages/oidc"> OpenID Connect </Link>
+        {/* <Link href="/pages/mutual-tls"> Mututal TLS </Link> */}
       </div>
      
     </div>

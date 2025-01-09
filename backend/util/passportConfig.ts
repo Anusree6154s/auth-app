@@ -1,10 +1,10 @@
 // passportConfig.js
 import passport from "passport";
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as FacebookStrategy } from "passport-facebook";
-import { Strategy as TwitterStrategy } from "passport-twitter";
 import { Strategy as GitHubStrategy } from "passport-github";
-
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import OpenIDConnectStrategy from "passport-openidconnect";
+import { Strategy as TwitterStrategy } from "passport-twitter";
 import {
   facebook_client_id,
   facebook_client_secret,
@@ -65,6 +65,29 @@ function configurePassport() {
       },
       (accessToken: any, refreshToken: any, profile: any, done: any) =>
         done(null, profile)
+    )
+  );
+
+
+  passport.use(
+    new OpenIDConnectStrategy(
+      {
+        issuer: "https://accounts.google.com",
+        authorizationURL: "https://accounts.google.com/o/oauth2/v2/auth",
+        tokenURL: "https://oauth2.googleapis.com/token",
+        userInfoURL: "https://openidconnect.googleapis.com/v1/userinfo",
+        clientID: google_client_id,
+        clientSecret: google_client_secret,
+        callbackURL: "/auth/oidc/callback",
+      },
+      async (issuer: any, profile: any, done: any) => {
+        try {
+          done(null, profile);
+        } catch (error) {
+          console.error("oidc strategy error:", error);
+          done(error);
+        }
+      }
     )
   );
 

@@ -1,14 +1,20 @@
 import express from "express";
+import basicauthRoutes from "./basicauth.routes";
 import jwtRoutes from "./jwt.routes";
 import oauthRoutes from "./oauth.routes";
+import oidcsRoutes from "./oidc.routes";
 import passwordlessRoutes from "./passwordless.routes";
-// import mututalTLSRoutes from "./mutual-tls.routes";
+import sessionRoutes from "./session.routes";
+import mututalTLSRoutes from "./mutualtls.routes";
 
 const router = express.Router();
 
+router.use("/basicauth", basicauthRoutes);
 router.use("/oauth", oauthRoutes);
 router.use("/jwt", jwtRoutes);
+router.use("/session", sessionRoutes);
 router.use("/passwordless", passwordlessRoutes);
-// router.use("/mutual-tls", mututalTLSRoutes);
+router.use("/oidc", oidcsRoutes);
+router.use("/mutualtls", mututalTLSRoutes);
 
 export default router;
