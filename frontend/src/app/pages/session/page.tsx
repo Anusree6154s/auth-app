@@ -2,9 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "./index.css";
 import Link from "next/link";
+import { AiOutlineUser } from "react-icons/ai";
 
 export default function Session() {
   const [username, setUsername] = useState<string>("");
@@ -21,9 +20,9 @@ export default function Session() {
       });
 
       if (res.ok) {
-        router.push("/pages/authenticated");
+        router.push("/pages/authenticated?title=Session Auth");
       } else {
-        toast.error("Session Auth Signup Error");
+        router.push("/pages/failed?title=Session");
       }
     } catch (error) {
       console.error("Session Auth Signup Error:", error);
@@ -37,7 +36,7 @@ export default function Session() {
         <Link href="/pages/authenticated">Try authenticated page →</Link>
       </div>
 
-      <h3>Session Auth</h3>
+      <h3><AiOutlineUser />Session Auth</h3>
       <input
         type="text"
         placeholder="Enter Username"

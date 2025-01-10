@@ -1,5 +1,5 @@
 import Link from "next/link";
-import "./index.css";
+import { IoLogoWebComponent } from "react-icons/io5";
 
 export default function Oauth() {
   return (
@@ -9,11 +9,14 @@ export default function Oauth() {
         <Link href="/pages/authenticated">Try authenticated page →</Link>
       </div>
 
-      <h3>OpenID Connect Auth</h3>
+      <h3>
+        <IoLogoWebComponent />
+        OpenID Connect Auth
+      </h3>
 
       <div className="buttons">
         <Link href="/auth/oidc/login">
-          <button>Login with OpenID</button> Connect
+          <button>Login with OpenID Connect</button>
         </Link>
       </div>
     </section>

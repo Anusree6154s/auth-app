@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FaShieldAlt } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
-import "./index.css";
 
 export default function Jwt() {
   const router = useRouter();
@@ -22,10 +22,10 @@ export default function Jwt() {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
-        router.push("/pages/authenticated");
+        router.push("/pages/authenticated?title=JWT via Header");
       } else {
         console.error(data);
-        router.push("/pages/failed");
+        router.push("/pages/failed?title=JWT via Header");
       }
     } catch (error) {
       console.error("Error checking authentication", error);
@@ -43,7 +43,8 @@ export default function Jwt() {
         body: JSON.stringify({ username: input }),
         headers: { "Content-Type": "application/json" },
       });
-      if (res.ok) router.push("/pages/authenticated");
+      if (res.ok) router.push("/pages/authenticated?title=JWT via Cookies");
+      else  router.push("/pages/failed?title=JWT via Cookies");
     } catch (error) {
       console.error("Error checking authentication", error);
     }
@@ -56,7 +57,7 @@ export default function Jwt() {
         <Link href="/pages/authenticated">Try authenticated page →</Link>
       </div>
 
-      <h3 className="font-[500] text-xl">Methods of passing JWT Token</h3>
+      <h3 className="font-[500] text-xl"><FaShieldAlt />JWT Token</h3>
 
       <input
         type="text"

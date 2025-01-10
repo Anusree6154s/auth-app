@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import "./index.css";
 import { Loader } from "./loader";
+import { FaEnvelope } from "react-icons/fa";
 
 export default function Passwordless() {
   const router = useRouter();
@@ -45,10 +45,10 @@ export default function Passwordless() {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
-        router.push("/pages/authenticated");
+        router.push("/pages/authenticated?title=Passwordless Auth");
       } else {
         console.error(data);
-        router.push("/pages/failed");
+        router.push("/pages/failed?title=Passwordless");
       }
     } catch (error) {
       console.error("Passwordless Error:", error);
@@ -62,7 +62,10 @@ export default function Passwordless() {
         <Link href="/pages/authenticated">Try authenticated page →</Link>
       </div>
 
-      <h3 className="font-[500] text-xl">Passwordless Auth</h3>
+      <h3 className="font-[500] text-xl">
+        <FaEnvelope />
+        Passwordless Auth
+      </h3>
 
       {!isOTPSent ? (
         <input

@@ -12,7 +12,8 @@ To study diff auth methods
 4. Session based auth
 5. Passwordless auth
 6. Open ID Connect (OIDC) based auth
-7. Mutual TLS based auth
+7. mTLS based auth
+8. Deployment
 
 ### 1. Basic Auth
 
@@ -66,8 +67,9 @@ To study diff auth methods
 
 - We used Google as the OpenID Provider (IdP) and passport-openidconnect to help set up openid
 
-### 7. Mutual TLS (not implemented completely cause of minor errors)
+### 7. mTLS (Mutual Transport Layer Security) (not implemented completely cause of minor errors)
 
+- https://github.com/edum-compassuol/mTLS-nodejs-example/blob/main/server/src/server.ts
 - Mutual TLS (mTLS) authentication involves verifying both the client and server identities using TLS certificates.
 - Includes 2 steps:
   1. creating certficated for server & client
@@ -89,3 +91,6 @@ To study diff auth methods
 - Used in Banks (e.g., JPMorgan Chase, Goldman Sachs), Payment Processors (e.g., Stripe, PayPal, Square), Cloud Providers (e.g., AWS, Microsoft Azure, Google Cloud), etc
 - Working:
   - Browsers do not natively support mTLS directly due to security constraints. So we will use nextjs api to work with client certificates. (∴ cannot do directly within page.tsx)
+
+### Deployment
+- Basic typescript nodejs deployment: https://youtu.be/4mqy5SjkDec?si=rFG2Wu8NYmq-8PjD

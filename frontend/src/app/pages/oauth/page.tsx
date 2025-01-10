@@ -1,5 +1,11 @@
 import Link from "next/link";
-import "./index.css";
+import {
+  FaGoogle,
+  FaFacebook,
+  FaGithub,
+  FaTwitter,
+  FaKey,
+} from "react-icons/fa";
 
 export default function Oauth() {
   return (
@@ -9,20 +15,30 @@ export default function Oauth() {
         <Link href="/pages/authenticated">Try authenticated page →</Link>
       </div>
 
-      <h3>Some Common Passport Strategies</h3>
+      <h3>
+        <FaKey /> Common Passport Strategies
+      </h3>
 
       <div className="buttons">
         <Link href="/auth/oauth/google">
-          <button>Login with Google</button>
+          <button className="flex gap-4 items-center">
+            <FaGoogle /> Login with Google
+          </button>
         </Link>
         <Link href="/auth/oauth/facebook">
-          <button>Login with Facebook</button>
+          <button className="flex gap-4 items-center">
+            <FaFacebook /> Login with Facebook
+          </button>
         </Link>
         <Link href="/auth/oauth/twitter">
-          <button>Login with Twitter</button>
+          <button className="flex gap-4 items-center">
+            <FaTwitter /> Login with Twitter
+          </button>
         </Link>
         <Link href="/auth/oauth/github">
-          <button>Login with Github</button>
+          <button className="flex gap-4 items-center">
+            <FaGithub /> Login with Github
+          </button>
         </Link>
       </div>
     </section>

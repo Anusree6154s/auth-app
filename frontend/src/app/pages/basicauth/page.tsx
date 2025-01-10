@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import "./index.css";
 import Link from "next/link";
+import { FiLock } from "react-icons/fi";
 
 export default function BasicAuth() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const router = useRouter();
 
   const handleSignup = async () => {
@@ -23,10 +23,11 @@ export default function BasicAuth() {
 
       if (res.ok) {
         router.push(
-          "/pages/authenticated" + `?username=${username}&password=${password}`
+          "/pages/authenticated?title=Basic Auth" +
+            `&username=${username}&password=${password}`
         );
       } else {
-        toast.error("Basic Auth Signup Error");
+        router.push("/pages/failed?title=Basic Auth");
       }
     } catch (error) {
       console.error("Basic Auth Signup Error:", error);
@@ -40,7 +41,9 @@ export default function BasicAuth() {
         <Link href="/pages/authenticated">Try authenticated page →</Link>
       </div>
 
-      <h3>Basic Auth</h3>
+      <h3>
+        <FiLock /> Basic Auth
+      </h3>
       <input
         type="text"
         placeholder="Enter Username"

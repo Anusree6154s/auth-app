@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { jwt_secret } from "../config/constants";
-import { getRedisClient } from "../redis/redisClient";
+import {  redisClient } from "../redis/redisClient";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
@@ -25,7 +25,6 @@ const verifyJWTHeaders = async (
       next();
     }
 
-    const redisClient = await getRedisClient();
     const isBlacklisted = await redisClient.get(token || "");
     if (isBlacklisted) {
       new Error("Token is blacklisted");
@@ -57,7 +56,6 @@ router.get("/headers/logout", async (req, res) => {
 
     if (token) {
       // Blacklist the token in Redis
-      const redisClient = await getRedisClient();
       await redisClient.set(token, "blacklisted", { EX: 3600 }); // 1-hour expiration
       console.log(`Token blacklisted: ${token}`);
     }
@@ -89,7 +87,6 @@ const verifyJWTCookies = async (
     next();
   }
 
-  const redisClient = await getRedisClient();
   const isBlacklisted = await redisClient.get(token || "");
   if (isBlacklisted) {
     new Error("Token is blacklisted");
@@ -122,7 +119,6 @@ router.get("/cookies/logout", async (req, res) => {
 
     if (token) {
       // Blacklist the token in Redis
-      const redisClient = await getRedisClient();
       await redisClient.set(token, "blacklisted", { EX: 3600 }); // 1-hour expiration
       console.log(`Token blacklisted: ${token}`);
     }

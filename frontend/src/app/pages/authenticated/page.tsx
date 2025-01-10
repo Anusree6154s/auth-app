@@ -2,9 +2,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import "./index.css";
+import styles from "./index.module.css";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { FiLock } from "react-icons/fi";
+import { FaEnvelope, FaKey, FaShieldAlt } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
+import { IoLogoWebComponent } from "react-icons/io5";
+// import { MdVpnKey } from "react-icons/md";
 
 export default function AuthenticatedPage() {
   return (
@@ -18,6 +23,11 @@ function SearchParamsComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const [title, setTitle] = useState<string>("");
+
+  useEffect(() => {
+    setTitle(searchParams.get("title") || "");
+  }, [searchParams]);
 
   const checkAuthBasicAuth = async () => {
     const username = searchParams.get("username");
@@ -91,11 +101,15 @@ function SearchParamsComponent() {
   };
 
   const logoutOAuth = async () => {
+    if (isLoggedOut) return toast.success("Already Logged Out of OAuth!");
     try {
       const res = await fetch("/auth/oauth/logout");
       const data = await res.json();
 
-      if (data.isLoggedOut) toast.success("Logged Out of OAuth!");
+      if (data.isLoggedOut) {
+        toast.success("Logged Out of OAuth!");
+        setIsLoggedOut(true);
+      }
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -307,89 +321,110 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthMTLS = async () => {
-    try {
-      // verification occus automatically in backend
-      const res = await fetch("/auth/mutualtls/check-auth");
-      const data = await res.json();
+  // const checkAuthMTLS = async () => {
+  //   try {
+  //     // verification occus automatically in backend
+  //     const res = await fetch("/auth/mutualtls/check-auth");
+  //     const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/mutualtls");
-      else
-        toast.success(
-          <div className="flex flex-col font-[Poppins]">
-            <span>Already Authenticated!</span>
-            <span className="text-gray-400 text-[10px]">
-              Logout OIDC Auth to Retry Login
-            </span>
-          </div>
-        );
-    } catch (error) {
-      console.error("Error checking authentication:", error);
-    }
-  };
+  //     if (!data.isAuthenticated) router.push("/pages/mutualtls");
+  //     else
+  //       toast.success(
+  //         <div className="flex flex-col font-[Poppins]">
+  //           <span>Already Authenticated!</span>
+  //           <span className="text-gray-400 text-[10px]">
+  //             Logout OIDC Auth to Retry Login
+  //           </span>
+  //         </div>
+  //       );
+  //   } catch (error) {
+  //     console.error("Error checking authentication:", error);
+  //   }
+  // };
 
-  const logoutMTLS = async () => {
-    if (isLoggedOut) return toast.success("Already Logged Out of OIDC Auth!");
-    try {
-      const res = await fetch("/auth/mutualtls/logout");
-      const data = await res.json();
+  // const logoutMTLS = async () => {
+  //   if (isLoggedOut) return toast.success("Already Logged Out of OIDC Auth!");
+  //   try {
+  //     const res = await fetch("/auth/mutualtls/logout");
+  //     const data = await res.json();
 
-      if (data.isLoggedOut) {
-        toast.success("Logged Out of OIDC Auth!");
-        setIsLoggedOut(true);
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
-
+  //     if (data.isLoggedOut) {
+  //       toast.success("Logged Out of OIDC Auth!");
+  //       setIsLoggedOut(true);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error logging out:", error);
+  //   }
+  // };
+  console.log('title:', title);
   return (
-    <section className="custom-container">
-      <div className="headers">
+    <section className={styles["custom-container"]}>
+      <div className={styles.headers}>
         <Link href="/">← Go back home</Link>
       </div>
 
-      <h3 className="font-[500] text-xl"> Authenticated</h3>
+      <h3 className="font-[500] text-xl">
+        Authenticated {title}
+      </h3>
       <ul className="text-left list-disc text-gray-500 text-[12px] ml-5">
         <li>To retry login while authenticated, just press Retry Login</li>
         <li>To retry login from beginning, logout and then Retry Login</li>
       </ul>
 
-      <div className=" buttons ">
-        <div className="inner">
+      <div className={styles.buttons}>
+        <div className={styles.inner}>
+          <span>
+            <FiLock />
+          </span>
           <button onClick={checkAuthBasicAuth}>Retry Basic Auth Login</button>
           <button onClick={logoutBasicAuth}>
             Logout of Basic Auth session
           </button>
         </div>
 
-        <div className="inner">
+        <div className={styles.inner}>
+          <span>
+            <FaKey />
+          </span>
           <button onClick={checkAuthOAuth}>Retry OAuth Login</button>
           <button onClick={logoutOAuth}>Logout of OAuth session</button>
         </div>
 
-        <div className="inner">
-          <button onClick={checkAuthJWTCookie}>Retry JWT Cookie Login</button>
-          <button onClick={logoutJWTCookie}>
-            Logout of JWT Cookie session
-          </button>
-        </div>
-
-        <div className="inner">
+        <div className={styles.inner}>
+          <span>
+            <FaShieldAlt />
+          </span>
           <button onClick={checkAuthJWTHeader}>Retry JWT Header Login</button>
           <button onClick={logoutJWTHeader}>
             Logout of JWT Header session
           </button>
         </div>
 
-        <div className="inner">
+        <div className={styles.inner}>
+          <span>
+            <FaShieldAlt />
+          </span>
+          <button onClick={checkAuthJWTCookie}>Retry JWT Cookie Login</button>
+          <button onClick={logoutJWTCookie}>
+            Logout of JWT Cookie session
+          </button>
+        </div>
+
+        <div className={styles.inner}>
+          <span>
+            <AiOutlineUser />
+          </span>
           <button onClick={checkAuthSession}>Retry Session Auth Login</button>
           <button onClick={logoutSession}>
             Logout of Session Auth session
           </button>
         </div>
 
-        <div className="inner">
+        <div className={styles.inner}>
+          <span>
+            <FaEnvelope />
+          </span>
+
           <button onClick={checkAuthPasswordlessAuth}>
             Retry Passwordless Auth Login
           </button>
@@ -398,15 +433,21 @@ function SearchParamsComponent() {
           </button>
         </div>
 
-        <div className="inner">
+        <div className={styles.inner}>
+          <span>
+            <IoLogoWebComponent />
+          </span>
           <button onClick={checkAuthOIDC}>Retry OIDC Auth Login</button>
           <button onClick={logoutOIDC}>Logout of OIDC Auth session</button>
         </div>
 
-        <div className="inner">
+        {/* <div className={styles.inner}>
+          <span>
+            <MdVpnKey />
+          </span>
           <button onClick={checkAuthMTLS}>Retry mTLS Auth Login</button>
           <button onClick={logoutMTLS}>Logout of mTLS Auth session</button>
-        </div>
+        </div> */}
       </div>
       <ToastContainer hideProgressBar={true} />
     </section>

@@ -9,7 +9,7 @@ import {
   jwt_secret,
   senders_gmail,
 } from "../config/constants";
-import { getRedisClient } from "../redis/redisClient";
+import { redisClient } from "../redis/redisClient";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const OAuth2 = google.auth.OAuth2;
@@ -80,7 +80,6 @@ router.post("/sendOTP", async (req: any, res: any) => {
     await sendEmail(email, otp);
 
     // Store the token and expiration time in Redis
-    const redisClient = await getRedisClient();
     await redisClient.setEx(`auth:otp:${email}`, expirationTime, otp);
 
     res.status(200).send({ isOTPSent: true });
@@ -99,7 +98,6 @@ router.post("/signup", async (req: any, res: any) => {
 
   try {
     // Fetch the token from Redis
-    const redisClient = await getRedisClient();
     const storedToken = await redisClient.get(`auth:otp:${email}`);
 
     if (!storedToken) {
@@ -109,7 +107,6 @@ router.post("/signup", async (req: any, res: any) => {
     // Check if token matches
     if (storedToken === OTP) {
       // Delete the token from Redis after successful verification
-      const redisClient = await getRedisClient();
       await redisClient.del(`auth:otp:${email}`);
 
       // Token is valid, create a JWT for the session (optional)
@@ -138,7 +135,6 @@ const verifyPasswordlessAuth = async (
     next();
   }
 
-  const redisClient = await getRedisClient();
   const isBlacklisted = await redisClient.get(token || "");
   if (isBlacklisted) {
     new Error("Token is blacklisted");
@@ -168,7 +164,6 @@ router.get("/logout", async (req, res) => {
 
     if (token) {
       // Blacklist the token in Redis
-      const redisClient = await getRedisClient();
       await redisClient.set(token, "blacklisted", { EX: 3600 }); // 1-hour expiration
       console.log(`Token blacklisted: ${token}`);
     }

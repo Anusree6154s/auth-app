@@ -27,12 +27,6 @@
 }
 
 .buttons .inner {
-  /* background-color: #fde68a; 
-  color: #92400e;  */
-  /* border-radius: 0.125rem; 
-  display: flex;
-  justify-content: center; 
-  width: 100%; */
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -51,7 +45,15 @@
   scrollbar-width: thin;
 }
 
-.buttons .inner > *:first-child {
+.buttons .inner >*:first-child{
+  border-radius: 0.125rem;
+  flex: 0.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons .inner > *:nth-child(2) {
   background-color: #fde68a;
   color: #92400e;
   border-radius: 0.125rem;

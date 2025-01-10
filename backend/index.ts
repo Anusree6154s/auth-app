@@ -1,3 +1,4 @@
+import * as connectRedis from "connect-redis";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -6,9 +7,10 @@ import session from "express-session";
 // import https from "https";
 import passport from "passport";
 // import path from "path";
-import { session_secret } from "./config/constants";
+
 import authRoutes from "./routes";
 import configurePassport from "./util/passportConfig";
+import { sessionOptions } from "./util/sessionConfig";
 
 const app = express();
 
@@ -22,29 +24,15 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
-
-// Configure session middleware
-app.use(
-  session({
-    secret: session_secret, // Replace with a secure key
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
-      secure: process.env.NODE_ENV === "production", // Set to true in production for HTTPS
-      httpOnly: true, // Prevents client-side JS from accessing the cookie
-    },
-  })
-);
-
+app.use(session(sessionOptions));// Configure session middleware
 app.use(passport.initialize()); //iniitlaise passport
 app.use(passport.session()); //initalise sessions for cookie mgmt
 
 configurePassport(); //passport config
 
-// Load mTLS certificates for mutual authentication
+// // Load mTLS certificates for mutual authentication
 // const certPath = path.resolve(__dirname, "..");
-// console.log(path.resolve(__dirname, "..", "certs"))
+// console.log(path.resolve(__dirname, "..", "certs"));
 // const serverOptions: https.ServerOptions = {
 //   key: fs.readFileSync(path.join(certPath, "certs", "server.key")),
 //   cert: fs.readFileSync(path.join(certPath, "certs", "server.crt")),
@@ -56,7 +44,7 @@ configurePassport(); //passport config
 app.use("/auth", authRoutes); //routes
 
 // the way of server connection for mTLS auth
-// https.createServer(serverOptions, app).listen(8443, () => {
+// https.createServer(serverOptions, app).listen(8000, () => {
 //   console.log("Server listening on port 8000");
 // });
 
