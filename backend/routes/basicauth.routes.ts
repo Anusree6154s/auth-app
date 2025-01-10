@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import basicAuth from "basic-auth"; // Middleware for basic auth
+import basicAuth from "basic-auth"; 
 import { Session } from "express-session";
 
 const router = express.Router();
