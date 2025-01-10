@@ -17,14 +17,18 @@ const app = express();
 // Enable CORS
 app.use(
   cors({
-    origin: ["http://localhost:5500", "http://127.0.0.1:5500"], // Allow your frontend origin
+    origin: [
+      "http://localhost:5500",
+      "http://127.0.0.1:5500",
+      "https://auth-app-frontend-taupe.vercel.app",
+    ], // Allow your frontend origin
     credentials: true, // Allow cookies and credentials
   })
 );
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(session(sessionOptions));// Configure session middleware
+app.use(session(sessionOptions)); // Configure session middleware
 app.use(passport.initialize()); //iniitlaise passport
 app.use(passport.session()); //initalise sessions for cookie mgmt
 

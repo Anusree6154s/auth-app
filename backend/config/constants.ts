@@ -20,6 +20,7 @@ export const github_client_id = process.env.github_client_id || "";
 export const github_client_secret = process.env.github_client_secret || "";
 
 export const frontendUrl = process.env.frontendUrl || "";
+export const backendUrl = process.env.backendUrl || "";
 
 export const jwt_secret = process.env.jwt_secret || "";
 
