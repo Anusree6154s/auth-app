@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/auth/:path*", // Frontend route
-        destination: "http://localhost:8000/auth/:path*", // Backend route
+        destination: "https://auth-app-backend-ab08.onrender.com/auth/:path*", // Backend route
       },
     ];
   },
