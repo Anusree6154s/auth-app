@@ -1,12 +1,14 @@
 import express, { NextFunction, Request, Response } from "express";
 import { jwt_secret } from "../config/constants";
-import { redisClient } from "../redis/redisClient";
+import { getRedisClient } from "../redis/redisClient";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
 router.post("/headers/signin", (req, res) => {
-  const token = jwt.sign({ username: req.body.username }, jwt_secret, { expiresIn: "1h" });
+  const token = jwt.sign({ username: req.body.username }, jwt_secret, {
+    expiresIn: "1h",
+  });
 
   res.json({ token });
 });
@@ -17,17 +19,18 @@ const verifyJWTHeaders = async (
   next: NextFunction
 ) => {
   try {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
-  if (!token) {
-    new Error("Access denied. No token provided");
-    next();
-  }
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    if (!token) {
+      new Error("Access denied. No token provided");
+      next();
+    }
 
-  const isBlacklisted = await redisClient.get(token || "");
-  if (isBlacklisted) {
-    new Error("Token is blacklisted");
-    next();
-  }
+    const redisClient = await getRedisClient();
+    const isBlacklisted = await redisClient.get(token || "");
+    if (isBlacklisted) {
+      new Error("Token is blacklisted");
+      next();
+    }
 
     // Verify the token
     const decoded = jwt.verify(token!, jwt_secret) as { username: string };
@@ -54,6 +57,7 @@ router.get("/headers/logout", async (req, res) => {
 
     if (token) {
       // Blacklist the token in Redis
+      const redisClient = await getRedisClient();
       await redisClient.set(token, "blacklisted", { EX: 3600 }); // 1-hour expiration
       console.log(`Token blacklisted: ${token}`);
     }
@@ -66,7 +70,9 @@ router.get("/headers/logout", async (req, res) => {
 });
 
 router.post("/cookies/signin", (req, res) => {
-  const token = jwt.sign({ username: req.body.username }, jwt_secret, { expiresIn: "1h" });
+  const token = jwt.sign({ username: req.body.username }, jwt_secret, {
+    expiresIn: "1h",
+  });
 
   res.cookie("token", token);
   res.sendStatus(200);
@@ -83,6 +89,7 @@ const verifyJWTCookies = async (
     next();
   }
 
+  const redisClient = await getRedisClient();
   const isBlacklisted = await redisClient.get(token || "");
   if (isBlacklisted) {
     new Error("Token is blacklisted");
@@ -115,6 +122,7 @@ router.get("/cookies/logout", async (req, res) => {
 
     if (token) {
       // Blacklist the token in Redis
+      const redisClient = await getRedisClient();
       await redisClient.set(token, "blacklisted", { EX: 3600 }); // 1-hour expiration
       console.log(`Token blacklisted: ${token}`);
     }

@@ -25,7 +25,7 @@ function configurePassport() {
         clientSecret: google_client_secret,
         callbackURL: "/auth/oauth/google/callback",
       },
-      (accessToken: any, refreshToken: any, profile: any, done: any) =>
+      (_: any, __: any, profile: any, done: any) =>
         done(null, profile)
     )
   );
@@ -37,8 +37,7 @@ function configurePassport() {
         clientSecret: facebook_client_secret,
         callbackURL: "/auth/oauth/facebook/callback",
       },
-      (accessToken: any, refreshToken: any, profile: any, done: any) =>
-        done(null, profile)
+      (_, __, profile, done) => done(null, profile)
     )
   );
 
@@ -50,7 +49,7 @@ function configurePassport() {
         consumerSecret: twitter_api_secret,
         callbackURL: "/auth/oauth/twitter/callback",
       },
-      (accessToken: any, refreshToken: any, profile: any, done: any) =>
+      (_: any, __: any, profile: any, done: any) =>
         done(null, profile)
     )
   );
@@ -63,11 +62,9 @@ function configurePassport() {
         clientSecret: github_client_secret,
         callbackURL: "/auth/oauth/github/callback",
       },
-      (accessToken: any, refreshToken: any, profile: any, done: any) =>
-        done(null, profile)
+      (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
   );
-
 
   passport.use(
     new OpenIDConnectStrategy(
@@ -80,7 +77,7 @@ function configurePassport() {
         clientSecret: google_client_secret,
         callbackURL: "/auth/oidc/callback",
       },
-      async (issuer: any, profile: any, done: any) => {
+      async (_: any, profile: any, done: any) => {
         try {
           done(null, profile);
         } catch (error) {
