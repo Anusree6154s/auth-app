@@ -17,7 +17,5 @@ export const sessionOptions = {
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
-    secure: process.env.NODE_ENV === "production", // Set to true in production for HTTPS
-    httpOnly: true, // Prevents client-side JS from accessing the cookie
   },
 };
