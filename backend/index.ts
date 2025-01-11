@@ -25,6 +25,7 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.set("trust proxy", 1);
 app.use(session(sessionOptions)); // Configure session middleware
 app.use(passport.initialize()); //iniitlaise passport
 app.use(passport.session()); //initalise sessions for cookie mgmt

@@ -20,5 +20,4 @@ export const sessionOptions = {
     httpOnly: false, // lets client-side JS access the cookie,
     secure: false,
   },
-  proxy: true,
 };
