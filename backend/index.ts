@@ -25,11 +25,10 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
-app.set("trust proxy", 1);
 app.use(
   session({
     //   store: new redisStore({
-    //     client: redisClient as unknown as connectRedis.Client,
+      //     client: redisClient as unknown as connectRedis.Client,
     //   }),
     // here redisClient is of type _redisClient..(smthg)
     // but Redis Store expects type Client.
@@ -39,13 +38,14 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      sameSite: "none", //rejects it unles secure true
+      // sameSite: "none", //rejects it unles secure true
       maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
-      secure: true, //allows cookie transfer only on https
-      domain: '.onrender.com',
+      // secure: true, //allows cookie transfer only on https
+      // domain: 'onrender.com',
     },
   })
 ); // Configure session middleware
+app.set("trust proxy", 2);
 app.use(passport.initialize()); //iniitlaise passport
 app.use(passport.session()); //initalise sessions for cookie mgmt
 
