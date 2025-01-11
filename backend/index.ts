@@ -42,6 +42,7 @@ app.use(
       sameSite: "none", //rejects it unles secure true
       maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
       secure: true, //allows cookie transfer only on https
+      domain: '.onrender.com',
     },
   })
 ); // Configure session middleware
