@@ -14,8 +14,9 @@ router.get("/github", passport.authenticate("github"));
 
 // Google OAuth callback route
 router.get("/google/callback", passport.authenticate("google"), (req, res) => {
-  if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
-  else res.redirect(frontendUrl + "/pages/failed");
+  res.send('google callback + auth successful!')
+  // if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
+  // else res.redirect(frontendUrl + "/pages/failed");
 });
 
 router.get(

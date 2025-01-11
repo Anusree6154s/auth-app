@@ -25,8 +25,8 @@ function configurePassport() {
       {
         clientID: google_client_id,
         clientSecret: google_client_secret,
-        // callbackURL: `${backendUrl}/auth/oauth/google/callback`,
-        callbackURL: `${frontendUrl}/pages/authenticated`,
+        callbackURL: `${backendUrl}/auth/oauth/google/callback`,
+        // callbackURL: `${frontendUrl}/pages/authenticated`,
       },
       (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
