@@ -18,7 +18,7 @@ export const sessionOptions = {
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
     httpOnly: false, // lets client-side JS access the cookie,
-    secure: true,
+    secure: false,
   },
   proxy: true,
 };
