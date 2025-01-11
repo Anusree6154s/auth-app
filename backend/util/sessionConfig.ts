@@ -16,8 +16,9 @@ export const sessionOptions = {
   resave: false,
   saveUninitialized: false,
   cookie: {
+    sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
     httpOnly: false, // lets client-side JS access the cookie,
-    secure: false,
+    secure: true, //allows cookie transfer ony on https
   },
 };

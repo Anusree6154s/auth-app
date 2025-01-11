@@ -11,7 +11,7 @@ import passport from "passport";
 import authRoutes from "./routes";
 import configurePassport from "./util/passportConfig";
 import { sessionOptions } from "./util/sessionConfig";
-import { frontendUrl } from "./config/constants";
+import { frontendUrl, session_secret } from "./config/constants";
 
 const app = express();
 
@@ -26,7 +26,27 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.set("trust proxy", 1);
-app.use(session(sessionOptions)); // Configure session middleware
+app.use(
+  session({
+    //   store: new redisStore({
+    //     client: redisClient as unknown as connectRedis.Client,
+    //   }),
+    // here redisClient is of type _redisClient..(smthg)
+    // but Redis Store expects type Client.
+    // therefore we type it as Client
+    // (it doesnt hurt the code)
+    secret: session_secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
+      httpOnly: false, // lets client-side JS access the cookie,
+      secure: true, //allows cookie transfer only on https
+      domain: frontendUrl,
+    },
+  })
+); // Configure session middleware
 app.use(passport.initialize()); //iniitlaise passport
 app.use(passport.session()); //initalise sessions for cookie mgmt
 
