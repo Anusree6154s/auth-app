@@ -39,11 +39,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      sameSite: true,
+      sameSite: "none", //rejects it unles secure true
       maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
-      httpOnly: false, // lets client-side JS access the cookie,
       secure: true, //allows cookie transfer only on https
-      domain: frontendUrl,
     },
   })
 ); // Configure session middleware
