@@ -94,9 +94,24 @@ To study diff auth methods
   - Browsers do not natively support mTLS directly due to security constraints. So we will use nextjs api to work with client certificates. (∴ cannot do directly within page.tsx)
 
 ### 8. Deployment
+
 - Basic typescript nodejs deployment: https://youtu.be/4mqy5SjkDec?si=rFG2Wu8NYmq-8PjD
+- Durig deployment, there is this whole mess. Checkout all changes I've made so far, all the minor fix commits to get an idea.
+- Express session does indeed not work with frontend and backend on diff servers.
+  - During development it worked because the browser confused the host(localhost) of both port 8000 and 3000 as it is coming from same domain.
+  - Added diff frontend host url as below in .env file of react to change hostname and it stopped co-operating with express-session 
+  ```bash
+  HOST=frontend.local
+  ```
+  - Therefore had to serve rthe frontend build folder from backend
+- Render is horrible at building and starting the server by itself for frontend as well as backend (as I've seen so far).
+  - Therefore I'm building the build files in both frontend and backend before commiting and pushing the build folders to github
+  - In render I just start the backend server
+- Rememeber for OAuth authentication always need to update the redirect urls in case you plan to host the server in any other website. 
+  - Also update the env variables accordingly
 
 ### 9. Choice of Techstack
+
 - ReactJS because of not able to use express-session
   - NextSJ was the first choice in order to learn the techstack. But express-session was not letting me set cookies in frontend because of cross-origin. (couldnt find a simple solution in neither stackoverflow nor gpt)
   - So now im serving react build files directly from server
