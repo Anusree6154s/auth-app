@@ -13,8 +13,8 @@ import {
   google_client_id,
   google_client_secret,
   twitter_api_key,
-  twitter_api_secret
-} from "../config/constants";
+  twitter_api_secret,
+} from "../../config/constants";
 
 function configurePassport() {
   // Configure Google OAuth strategy
@@ -46,7 +46,7 @@ function configurePassport() {
       {
         consumerKey: twitter_api_key,
         consumerSecret: twitter_api_secret,
-        callbackURL:  "/auth/oauth/twitter/callback",
+        callbackURL: "/auth/oauth/twitter/callback",
       },
       (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
@@ -58,7 +58,7 @@ function configurePassport() {
       {
         clientID: github_client_id,
         clientSecret: github_client_secret,
-        callbackURL:  "/auth/oauth/github/callback",
+        callbackURL: "/auth/oauth/github/callback",
       },
       (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
@@ -73,7 +73,7 @@ function configurePassport() {
         userInfoURL: "https://openidconnect.googleapis.com/v1/userinfo",
         clientID: google_client_id,
         clientSecret: google_client_secret,
-        callbackURL:  "/auth/oidc/callback",
+        callbackURL: "/auth/oidc/callback",
       },
       async (_: any, profile: any, done: any) => {
         try {

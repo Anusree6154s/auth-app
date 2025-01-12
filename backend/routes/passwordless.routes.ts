@@ -1,7 +1,8 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import { google } from "googleapis";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 import {
   google_client_id,
   google_client_secret,
@@ -10,7 +11,6 @@ import {
   senders_gmail,
 } from "../config/constants";
 import { redisClient } from "../redis/redisClient";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const OAuth2 = google.auth.OAuth2;
 const router = express.Router();
