@@ -4,13 +4,13 @@ import session from "express-session";
 import passport from "passport";
 
 import path from "path";
-import { port, session_secret } from "./config/constants";
+import { env, port, session_secret } from "./config/constants";
 import authRoutes from "./routes";
 import configurePassport from "./util/passportConfig";
 
 const app = express();
 
-if (process.env.NODE_ENV === "production") {
+if (env === "production") {
   app.use(express.static(path.resolve(__dirname, "../../frontend/build")));
 } else {
   app.use(express.static(path.resolve(__dirname, "../frontend/build")));
@@ -35,7 +35,7 @@ configurePassport(); //passport config
 
 app.use("/auth", authRoutes); //routes
 
-if (process.env.NODE_ENV === "production") {
+if (env === "production") {
   app.use("/", (_, res) =>
     res.sendFile(path.resolve(__dirname, "../../frontend/build", "index.html"))
   );

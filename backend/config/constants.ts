@@ -1,6 +1,7 @@
 import "dotenv/config";
 
 export const port = process.env.PORT || 3000;
+export const env = process.env.NODE_ENV || "";
 export const session_secret = process.env.session_secret || "";
 
 export const google_client_id = process.env.google_client_id || "";
