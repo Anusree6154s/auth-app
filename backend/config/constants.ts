@@ -29,3 +29,6 @@ export const senders_gmail = process.env.senders_gmail || "";
 export const senders_gmail_app_password =
   process.env.senders_gmail_app_password || "";
 export const google_refresh_token = process.env.google_refresh_token || "";
+
+
+export const backendUrl= process.env.backendUrl

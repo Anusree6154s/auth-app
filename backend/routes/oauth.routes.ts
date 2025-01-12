@@ -12,6 +12,7 @@ router.get("/twitter", passport.authenticate("twitter"));
 router.get("/github", passport.authenticate("github"));
 
 // Google OAuth callback route
+
 router.get(
   "/google/callback",
   passport.authenticate("google", {

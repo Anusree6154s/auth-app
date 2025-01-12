@@ -6,6 +6,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import OpenIDConnectStrategy from "passport-openidconnect";
 import { Strategy as TwitterStrategy } from "passport-twitter";
 import {
+  backendUrl,
   facebook_client_id,
   facebook_client_secret,
   github_client_id,
@@ -18,12 +19,15 @@ import {
 
 function configurePassport() {
   // Configure Google OAuth strategy
+
+  // https://stackoverflow.com/questions/70711876/my-https-website-after-google-auth-redirects-to-http
+  // ∴ adding backendurl for prodcution purpose
   passport.use(
     new GoogleStrategy(
       {
         clientID: google_client_id,
         clientSecret: google_client_secret,
-        callbackURL: "/auth/oauth/google/callback",
+        callbackURL: backendUrl + "/auth/oauth/google/callback",
       },
       (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
@@ -34,7 +38,7 @@ function configurePassport() {
       {
         clientID: facebook_client_id,
         clientSecret: facebook_client_secret,
-        callbackURL: "/auth/oauth/facebook/callback",
+        callbackURL: backendUrl + "/auth/oauth/facebook/callback",
       },
       (_, __, profile, done) => done(null, profile)
     )
@@ -46,7 +50,7 @@ function configurePassport() {
       {
         consumerKey: twitter_api_key,
         consumerSecret: twitter_api_secret,
-        callbackURL: "/auth/oauth/twitter/callback",
+        callbackURL: backendUrl + "/auth/oauth/twitter/callback",
       },
       (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
@@ -58,7 +62,7 @@ function configurePassport() {
       {
         clientID: github_client_id,
         clientSecret: github_client_secret,
-        callbackURL: "/auth/oauth/github/callback",
+        callbackURL: backendUrl + "/auth/oauth/github/callback",
       },
       (_: any, __: any, profile: any, done: any) => done(null, profile)
     )
@@ -73,7 +77,7 @@ function configurePassport() {
         userInfoURL: "https://openidconnect.googleapis.com/v1/userinfo",
         clientID: google_client_id,
         clientSecret: google_client_secret,
-        callbackURL: "/auth/oidc/callback",
+        callbackURL: backendUrl + "/auth/oidc/callback",
       },
       async (_: any, profile: any, done: any) => {
         try {
