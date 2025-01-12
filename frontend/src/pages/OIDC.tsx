@@ -24,7 +24,7 @@ const OIDC: React.FC = () => {
           Login with OpenID Connect
         </button> */}
         <a
-          href="http://localhost:8000/auth/oidc/login"
+          href="/auth/oidc/login"
           className="flex gap-4 items-center"
         >
           Login with OpenID Connect

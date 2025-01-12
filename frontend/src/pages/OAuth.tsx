@@ -31,20 +31,20 @@ const OAuth: React.FC = () => {
           <FaGoogle /> Login with Google
         </a>
         <a
-          href="http://localhost:8000/auth/oauth/facebook"
+          href="/auth/oauth/facebook"
           className="flex gap-4 items-center"
         >
           <FaFacebook /> Login with Facebook
         </a>
         {/* redirect uris not changed for these below */}
         {/* <a
-          href="http://localhost:8000/auth/oauth/twitter"
+          href="/auth/oauth/twitter"
           className="flex gap-4 items-center"
         >
           <FaTwitter /> Login with Twitter
         </a>
         <a
-          href="http://localhost:8000/auth/oauth/github"
+          href="/auth/oauth/github"
           className="flex gap-4 items-center"
         >
           <FaGithub /> Login with Github
