@@ -1,7 +1,7 @@
-import express, { NextFunction, Request, Response } from "express";
-import { jwt_secret } from "../config/constants";
-import {  redisClient } from "../redis/redisClient";
+import express from "express";
 import jwt from "jsonwebtoken";
+import { jwt_secret } from "../config/constants";
+import { redisClient } from "../redis/redisClient";
 
 const router = express.Router();
 
@@ -13,22 +13,18 @@ router.post("/headers/signin", (req, res) => {
   res.json({ token });
 });
 
-const verifyJWTHeaders = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+router.get("/headers/check-auth", async (req, res) => {
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");
-    if (!token) {
-      new Error("Access denied. No token provided");
-      next();
+    if (token === "Bearer") {
+      res.json({ message: "Access denied. No token provided" });
+      return;
     }
 
     const isBlacklisted = await redisClient.get(token || "");
     if (isBlacklisted) {
-      new Error("Token is blacklisted");
-      next();
+      res.json({ message: "Token is blacklisted" });
+      return;
     }
 
     // Verify the token
@@ -37,16 +33,11 @@ const verifyJWTHeaders = async (
     // Attach decoded user information to the request
     req.user = decoded;
 
-    // Proceed to the next middleware/route handler
-    next();
+    res.json({ isAuthenticated: req.user ? true : false });
   } catch (error) {
     console.error("jwt headers verify error:", error);
     res.status(500).json({ error });
   }
-};
-
-router.get("/headers/check-auth", verifyJWTHeaders, (req, res) => {
-  res.json({ isAuthenticated: req.user ? true : false });
 });
 
 // Logout route
@@ -76,21 +67,17 @@ router.post("/cookies/signin", (req, res) => {
   res.sendStatus(200);
 });
 
-const verifyJWTCookies = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+router.get("/cookies/check-auth", async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
-    new Error("Access denied. No token provided");
-    next();
+    res.json({ message: "Access denied. No token provided" });
+    return;
   }
 
   const isBlacklisted = await redisClient.get(token || "");
   if (isBlacklisted) {
-    new Error("Token is blacklisted");
-    next();
+    res.json({ message: "Token is blacklisted" });
+    return;
   }
 
   try {
@@ -100,16 +87,11 @@ const verifyJWTCookies = async (
     // Attach decoded user information to the request
     req.user = decoded;
 
-    // Proceed to the next middleware/route handler
-    next();
+    res.json({ isAuthenticated: req.user ? true : false });
   } catch (error) {
     console.error("jwt cookies verify error:", error);
     res.status(500).json({ error });
   }
-};
-
-router.get("/cookies/check-auth", verifyJWTCookies, (req, res) => {
-  res.json({ isAuthenticated: req.user ? true : false });
 });
 
 // Logout route

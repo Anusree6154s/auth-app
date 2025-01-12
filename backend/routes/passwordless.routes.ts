@@ -124,21 +124,17 @@ router.post("/signup", async (req: any, res: any) => {
   }
 });
 
-const verifyPasswordlessAuth = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+router.get("/check-auth", async (req, res) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
-  if (!token) {
-    new Error("Access denied. No token provided");
-    next();
+  if (token === "Bearer") {
+    res.json({ message: "Access denied. No token provided" });
+    return;
   }
 
   const isBlacklisted = await redisClient.get(token || "");
   if (isBlacklisted) {
-    new Error("Token is blacklisted");
-    next();
+    res.json({ message: "Token is blacklisted" });
+    return;
   }
 
   try {
@@ -146,15 +142,11 @@ const verifyPasswordlessAuth = async (
 
     req.user = decoded;
 
-    next();
+    res.json({ isAuthenticated: req.user ? true : false });
   } catch (error) {
     console.error("jwt headers verify error:", error);
     res.status(500).json({ error });
   }
-};
-
-router.get("/check-auth", verifyPasswordlessAuth, (req, res) => {
-  res.json({ isAuthenticated: req.user ? true : false });
 });
 
 // Logout route

@@ -14,6 +14,7 @@ To study diff auth methods
 6. Open ID Connect (OIDC) based auth
 7. mTLS based auth
 8. Deployment
+9. Choice of Techstack
 
 ### 1. Basic Auth
 
@@ -92,5 +93,10 @@ To study diff auth methods
 - Working:
   - Browsers do not natively support mTLS directly due to security constraints. So we will use nextjs api to work with client certificates. (∴ cannot do directly within page.tsx)
 
-### Deployment
+### 8. Deployment
 - Basic typescript nodejs deployment: https://youtu.be/4mqy5SjkDec?si=rFG2Wu8NYmq-8PjD
+
+### 9. Choice of Techstack
+- ReactJS because of not able to use express-session
+  - NextSJ was the first choice in order to learn the techstack. But express-session was not letting me set cookies in frontend because of cross-origin. (couldnt find a simple solution in neither stackoverflow nor gpt)
+  - So now im serving react build files directly from server

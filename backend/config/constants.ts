@@ -19,9 +19,6 @@ export const twitter_api_secret = process.env.twitter_api_secret || "";
 export const github_client_id = process.env.github_client_id || "";
 export const github_client_secret = process.env.github_client_secret || "";
 
-export const frontendUrl = process.env.frontendUrl || "";
-export const backendUrl = process.env.backendUrl || "";
-
 export const jwt_secret = process.env.jwt_secret || "";
 
 export const redis_url = process.env.redis_url || "";

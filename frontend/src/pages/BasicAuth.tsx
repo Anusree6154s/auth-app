@@ -1,15 +1,12 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import Link from "next/link";
+import { useNavigate } from "react-router-dom";
 import { FiLock } from "react-icons/fi";
 
-export default function BasicAuth() {
+const BasicAuth: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const router = useRouter();
+  const navigate = useNavigate(); // React Router navigation hook
 
   const handleSignup = async () => {
     try {
@@ -22,12 +19,11 @@ export default function BasicAuth() {
       });
 
       if (res.ok) {
-        router.push(
-          "/pages/authenticated?title=Basic Auth" +
-            `&username=${username}&password=${password}`
+        navigate(
+          `/pages/authenticated?title=Basic Auth&username=${username}&password=${password}`
         );
       } else {
-        router.push("/pages/failed?title=Basic Auth");
+        navigate("/pages/failed?title=Basic Auth");
       }
     } catch (error) {
       console.error("Basic Auth Signup Error:", error);
@@ -36,9 +32,11 @@ export default function BasicAuth() {
 
   return (
     <main className="custom-container">
-      <div className=" headers">
-        <Link href="/">← Go back home</Link>
-        <Link href="/pages/authenticated">Try authenticated page →</Link>
+      <div className="headers">
+        <button onClick={() => navigate("/")}>← Go back home</button>
+        <button onClick={() => navigate("/pages/authenticated")}>
+          Try authenticated page →
+        </button>
       </div>
 
       <h3>
@@ -63,4 +61,6 @@ export default function BasicAuth() {
       </div>
     </main>
   );
-}
+};
+
+export default BasicAuth;

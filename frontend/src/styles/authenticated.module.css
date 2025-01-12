@@ -1,0 +1,86 @@
+.buttons .inner {
+  display: flex;
+  gap: 5px;
+  background-color: transparent;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px;
+}
+
+.buttons .inner > *:first-child {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  flex: 0.1;
+  border-radius: 0.125rem;
+}
+
+.buttons .inner > *:first-child > * {
+  width: 100%;
+}
+
+.buttons .inner > *:nth-child(2) {
+  background-color: #fde68a;
+  flex: 1;
+  border-radius: 0.125rem;
+}
+
+.buttons .inner > *:last-child {
+  background-color: #fecaca;
+  flex: 1;
+  border-radius: 0.125rem;
+}
+
+.custom-container {
+  background-color: #ffffff;
+  border-radius: 0.375rem;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .custom-container {
+    width: 60vw;
+  }
+
+  .buttons .inner {
+    flex-direction: row;
+    padding: 0px;
+    gap: 20px;
+  }
+
+  .buttons {
+    gap: 0.5rem;
+  }
+}
+
+.headers {
+  font-size: 10px;
+  color: #6b7280;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  justify-content: start;
+  padding: 20px;
+}
+
+h3 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

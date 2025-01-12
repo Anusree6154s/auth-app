@@ -1,6 +1,5 @@
 import express from "express";
 import passport from "passport";
-import { frontendUrl } from "../config/constants";
 
 const router = express.Router();
 
@@ -13,46 +12,37 @@ router.get("/twitter", passport.authenticate("twitter"));
 router.get("/github", passport.authenticate("github"));
 
 // Google OAuth callback route
-router.get("/google/callback", passport.authenticate("google"), (req, res) => {
-  // res.send('google callback + auth successful!')
-  // if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
-  // else res.redirect(frontendUrl + "/pages/failed");
-  if (req.user) {
-    // Ensure the session is saved before redirect
-    req.session.save((err) => {
-      if (err) {
-        console.error('Session save error:', err);
-        return res.redirect(frontendUrl + "/pages/failed");
-      }
-      res.redirect(frontendUrl + "/pages/authenticated");
-    });
-  } else {
-    res.redirect(frontendUrl + "/pages/failed");
-  }
-});
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/pages/authenticated",
+    failureRedirect: "/pages/failed",
+  })
+);
 
 router.get(
   "/facebook/callback",
-  passport.authenticate("facebook"),
-  (req, res) => {
-    if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
-    else res.redirect(frontendUrl + "/pages/failed");
-  }
+  passport.authenticate("facebook", {
+    successRedirect: "/pages/authenticated",
+    failureRedirect: "/pages/failed",
+  })
 );
 
 router.get(
   "/twitter/callback",
-  passport.authenticate("twitter"),
-  (req, res) => {
-    if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
-    else res.redirect(frontendUrl + "/pages/failed");
-  }
+  passport.authenticate("twitter", {
+    successRedirect: "/pages/authenticated",
+    failureRedirect: "/pages/failed",
+  })
 );
 
-router.get("/github/callback", passport.authenticate("github"), (req, res) => {
-  if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
-  else res.redirect(frontendUrl + "/pages/failed");
-});
+router.get(
+  "/github/callback",
+  passport.authenticate("github", {
+    successRedirect: "/pages/authenticated",
+    failureRedirect: "/pages/failed",
+  })
+);
 
 router.get("/check-auth", (req, res) => {
   res.json({ isAuthenticated: req.isAuthenticated() });

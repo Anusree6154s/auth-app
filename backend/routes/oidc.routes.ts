@@ -1,15 +1,17 @@
 import express from "express";
 import passport from "passport";
-import { frontendUrl } from "../config/constants";
 
 const router = express.Router();
 
 router.get("/login", passport.authenticate("openidconnect"));
 
-router.get("/callback", passport.authenticate("openidconnect"), (req, res) => {
-  if (req.user) res.redirect(frontendUrl + "/pages/authenticated");
-  else res.redirect(frontendUrl + "/pages/failed");
-});
+router.get(
+  "/callback",
+  passport.authenticate("openidconnect", {
+    successRedirect: "/pages/authenticated",
+    failureRedirect: "/pages/failed",
+  })
+);
 
 router.get("/check-auth", (req, res) => {
   res.json({ isAuthenticated: req.isAuthenticated() });

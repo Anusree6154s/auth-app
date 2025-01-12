@@ -1,37 +1,26 @@
-"use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
-import styles from "./index.module.css";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { FiLock } from "react-icons/fi";
-import { FaEnvelope, FaKey, FaShieldAlt } from "react-icons/fa";
+import { JSX, useEffect, useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
+import { FaEnvelope, FaKey, FaShieldAlt } from "react-icons/fa";
+import { FiLock } from "react-icons/fi";
 import { IoLogoWebComponent } from "react-icons/io5";
-// import { MdVpnKey } from "react-icons/md";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import styles from "../styles/authenticated.module.css";
+import { Link } from "react-router-dom";
 
-export default function AuthenticatedPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <SearchParamsComponent />
-    </Suspense>
-  );
-}
-
-function SearchParamsComponent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
+export default function AuthenticatedPage(): JSX.Element {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [isLoggedOut, setIsLoggedOut] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
     setTitle(searchParams.get("title") || "");
   }, [searchParams]);
 
-  const checkAuthBasicAuth = async () => {
-    const username = searchParams.get("username");
-    const password = searchParams.get("password");
+  const checkAuthBasicAuth = async (): Promise<void> => {
+    const username = searchParams.get("username") || "";
+    const password = searchParams.get("password") || "";
     try {
       const res = await fetch("/auth/basicauth/check-auth", {
         method: "GET",
@@ -41,10 +30,10 @@ function SearchParamsComponent() {
       });
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/basicauth");
+      if (!data.isAuthenticated) navigate("/pages/basicauth");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
               Logout Basic Auth to Retry Login
@@ -56,11 +45,14 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutBasicAuth = async () => {
-    if (isLoggedOut) return toast.success("Already Logged Out of Basic Auth!");
+  const logoutBasicAuth = async (): Promise<void> => {
+    if (isLoggedOut) {
+      toast.success("Already Logged Out of Basic Auth!");
+      return;
+    }
 
-    const username = searchParams.get("username");
-    const password = searchParams.get("password");
+    const username = searchParams.get("username") || "";
+    const password = searchParams.get("password") || "";
     try {
       const res = await fetch("/auth/basicauth/logout", {
         method: "GET",
@@ -79,16 +71,15 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthOAuth = async () => {
+  const checkAuthOAuth = async (): Promise<void> => {
     try {
-      // verification occus automatically in backend
       const res = await fetch("/auth/oauth/check-auth");
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/oauth");
+      if (!data.isAuthenticated) navigate("/pages/oauth");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
               Logout OAuth to Retry Login
@@ -100,8 +91,11 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutOAuth = async () => {
-    if (isLoggedOut) return toast.success("Already Logged Out of OAuth!");
+  const logoutOAuth = async (): Promise<void> => {
+    if (isLoggedOut) {
+      toast.success("Already Logged Out of OAuth!");
+      return;
+    }
     try {
       const res = await fetch("/auth/oauth/logout");
       const data = await res.json();
@@ -115,10 +109,9 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthJWTHeader = async () => {
+  const checkAuthJWTHeader = async (): Promise<void> => {
     const token = localStorage.getItem("token") || "";
     try {
-      // verify token via header
       const res = await fetch("/auth/jwt/headers/check-auth", {
         method: "GET",
         headers: {
@@ -127,10 +120,10 @@ function SearchParamsComponent() {
       });
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/jwt");
+      if (!data.isAuthenticated) navigate("/pages/jwt");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
               Logout JWT Headers to Retry Login
@@ -142,9 +135,12 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutJWTHeader = async () => {
+  const logoutJWTHeader = async (): Promise<void> => {
     const token = localStorage.getItem("token") || "";
-    if (!token) return toast.success("Already Logged Out of JWT Header!");
+    if (!token) {
+      toast.success("Already Logged Out of JWT Header!");
+      return;
+    }
     try {
       const res = await fetch("/auth/jwt/headers/logout", {
         method: "GET",
@@ -163,15 +159,15 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthJWTCookie = async () => {
+  const checkAuthJWTCookie = async (): Promise<void> => {
     try {
       const res = await fetch("/auth/jwt/cookies/check-auth");
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/jwt");
+      if (!data.isAuthenticated) navigate("/pages/jwt");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
               Logout JWT Cookie to Retry Login
@@ -183,12 +179,14 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutJWTCookie = async () => {
+  const logoutJWTCookie = async (): Promise<void> => {
     const token = document.cookie
-      .split("; ") // Split cookies into individual pairs
+      .split("; ")
       .find((row) => row.startsWith("token="));
-    if (!token) return toast.success("Already Logged Out of JWT Cookies!");
-
+    if (!token) {
+      toast.success("Already Logged Out of JWT Cookies!");
+      return;
+    }
     try {
       const res = await fetch("/auth/jwt/cookies/logout");
       const data = await res.json();
@@ -199,15 +197,15 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthSession = async () => {
+  const checkAuthSession = async (): Promise<void> => {
     try {
       const res = await fetch("/auth/session/check-auth");
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/session");
+      if (!data.isAuthenticated) navigate("/pages/session");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
               Logout Session Auth to Retry Login
@@ -219,9 +217,11 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutSession = async () => {
-    if (isLoggedOut)
-      return toast.success("Already Logged Out of Session Auth!");
+  const logoutSession = async (): Promise<void> => {
+    if (isLoggedOut) {
+      toast.success("Already Logged Out of Session Auth!");
+      return;
+    }
 
     try {
       const res = await fetch("/auth/session/logout");
@@ -236,10 +236,9 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthPasswordlessAuth = async () => {
+  const checkAuthPasswordlessAuth = async (): Promise<void> => {
     const token = localStorage.getItem("token") || "";
     try {
-      // verify token via header
       const res = await fetch("/auth/passwordless/check-auth", {
         method: "GET",
         headers: {
@@ -248,10 +247,10 @@ function SearchParamsComponent() {
       });
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/passwordless");
+      if (!data.isAuthenticated) navigate("/pages/passwordless");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
               Logout Passwordless Auth to Retry Login
@@ -263,10 +262,13 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutPasswordlessAuth = async () => {
+  const logoutPasswordlessAuth = async (): Promise<void> => {
     const token = localStorage.getItem("token") || "";
-    if (!token)
-      return toast.success("Already Logged Out of Passwordless Auth!");
+    if (!token) {
+      toast.success("Already Logged Out of Passwordless Auth!");
+      return;
+    }
+
     try {
       const res = await fetch("/auth/passwordless/logout", {
         method: "GET",
@@ -285,19 +287,18 @@ function SearchParamsComponent() {
     }
   };
 
-  const checkAuthOIDC = async () => {
+  const checkAuthOIDC = async (): Promise<void> => {
     try {
-      // verification occus automatically in backend
       const res = await fetch("/auth/oidc/check-auth");
       const data = await res.json();
 
-      if (!data.isAuthenticated) router.push("/pages/oidc");
+      if (!data.isAuthenticated) navigate("/pages/oidc");
       else
         toast.success(
-          <div className="flex flex-col font-[Poppins]">
+          <div className="flex flex-col ">
             <span>Already Authenticated!</span>
             <span className="text-gray-400 text-[10px]">
-              Logout OIDC Auth to Retry Login
+              Logout OIDC to Retry Login
             </span>
           </div>
         );
@@ -306,14 +307,18 @@ function SearchParamsComponent() {
     }
   };
 
-  const logoutOIDC = async () => {
-    if (isLoggedOut) return toast.success("Already Logged Out of OIDC Auth!");
+  const logoutOIDC = async (): Promise<void> => {
+    if (isLoggedOut) {
+      toast.success("Already Logged Out of OIDC!");
+      return;
+    }
+
     try {
       const res = await fetch("/auth/oidc/logout");
       const data = await res.json();
 
       if (data.isLoggedOut) {
-        toast.success("Logged Out of OIDC Auth!");
+        toast.success("Logged Out of OIDC!");
         setIsLoggedOut(true);
       }
     } catch (error) {
@@ -321,51 +326,13 @@ function SearchParamsComponent() {
     }
   };
 
-  // const checkAuthMTLS = async () => {
-  //   try {
-  //     // verification occus automatically in backend
-  //     const res = await fetch("/auth/mutualtls/check-auth");
-  //     const data = await res.json();
-
-  //     if (!data.isAuthenticated) router.push("/pages/mutualtls");
-  //     else
-  //       toast.success(
-  //         <div className="flex flex-col font-[Poppins]">
-  //           <span>Already Authenticated!</span>
-  //           <span className="text-gray-400 text-[10px]">
-  //             Logout OIDC Auth to Retry Login
-  //           </span>
-  //         </div>
-  //       );
-  //   } catch (error) {
-  //     console.error("Error checking authentication:", error);
-  //   }
-  // };
-
-  // const logoutMTLS = async () => {
-  //   if (isLoggedOut) return toast.success("Already Logged Out of OIDC Auth!");
-  //   try {
-  //     const res = await fetch("/auth/mutualtls/logout");
-  //     const data = await res.json();
-
-  //     if (data.isLoggedOut) {
-  //       toast.success("Logged Out of OIDC Auth!");
-  //       setIsLoggedOut(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error logging out:", error);
-  //   }
-  // };
-  console.log('title:', title);
   return (
     <section className={styles["custom-container"]}>
       <div className={styles.headers}>
-        <Link href="/">← Go back home</Link>
+        <Link to="/">← Go back home</Link>
       </div>
 
-      <h3 className="font-[500] text-xl">
-        Authenticated {title}
-      </h3>
+      <h3 className="font-[500] text-xl">Authenticated {title}</h3>
       <ul className="text-left list-disc text-gray-500 text-[12px] ml-5">
         <li>To retry login while authenticated, just press Retry Login</li>
         <li>To retry login from beginning, logout and then Retry Login</li>

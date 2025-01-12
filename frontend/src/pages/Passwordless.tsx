@@ -1,20 +1,23 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import { Loader } from "./loader";
-import { FaEnvelope } from "react-icons/fa";
 
-export default function Passwordless() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [isOTPSent, setIsOTPSent] = useState(false);
-  const [OTP, setOTP] = useState("");
-  const [loading, setLoading] = useState(false);
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { FaEnvelope } from "react-icons/fa";
+import { Loader } from "../components/Loader";
+
+const Passwordless: React.FC = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState<string>("");
+  const [isOTPSent, setIsOTPSent] = useState<boolean>(false);
+  const [OTP, setOTP] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const sendOTP = async () => {
-    if (!email) return toast.warn("Enter Email!");
+    if (!email) {
+      toast.warn("Enter Email!");
+      return;
+    }
     try {
       setLoading(true);
       const res = await fetch("/auth/passwordless/sendOTP", {
@@ -31,11 +34,15 @@ export default function Passwordless() {
       }
     } catch (error) {
       console.error("Passwordless Error:", error);
+      setLoading(false);
     }
   };
 
-  const signiupPasswordless = async () => {
-    if (!OTP) return toast.warn("Enter Email!");
+  const signupPasswordless = async () => {
+    if (!OTP) {
+      toast.warn("Enter OTP!");
+      return;
+    }
     try {
       const res = await fetch("/auth/passwordless/signup", {
         method: "POST",
@@ -45,10 +52,10 @@ export default function Passwordless() {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
-        router.push("/pages/authenticated?title=Passwordless Auth");
+        navigate("/pages/authenticated?title=Passwordless Auth");
       } else {
         console.error(data);
-        router.push("/pages/failed?title=Passwordless");
+        navigate("/pages/failed?title=Passwordless");
       }
     } catch (error) {
       console.error("Passwordless Error:", error);
@@ -57,9 +64,11 @@ export default function Passwordless() {
 
   return (
     <section className="custom-container">
-      <div className=" headers">
-        <Link href="/">← Go back home</Link>
-        <Link href="/pages/authenticated">Try authenticated page →</Link>
+      <div className="headers">
+        <button onClick={() => navigate("/")}>← Go back home</button>
+        <button onClick={() => navigate("/pages/authenticated")}>
+          Try authenticated page →
+        </button>
       </div>
 
       <h3 className="font-[500] text-xl">
@@ -69,9 +78,10 @@ export default function Passwordless() {
 
       {!isOTPSent ? (
         <input
-          type="text"
+          type="email"
           name="email"
           placeholder="Enter Email to signup"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="rounded-sm bg-slate-50 text-gray-500 text-[12px] p-2 w-full text-center"
         />
@@ -80,6 +90,7 @@ export default function Passwordless() {
           type="number"
           name="otp"
           placeholder="Enter OTP"
+          value={OTP}
           onChange={(e) => setOTP(e.target.value)}
           className="rounded-sm bg-slate-50 text-gray-500 text-[12px] p-2 w-full text-center"
         />
@@ -87,14 +98,19 @@ export default function Passwordless() {
 
       {!isOTPSent ? (
         <div className="buttons">
-          <button onClick={sendOTP}>{loading && <Loader />}Send OTP</button>
+          <button onClick={sendOTP}>
+            {loading && <Loader />}
+            Send OTP
+          </button>
         </div>
       ) : (
         <div className="buttons">
-          <button onClick={signiupPasswordless}>Signup with OTP</button>
+          <button onClick={signupPasswordless}>Signup with OTP</button>
         </div>
       )}
       <ToastContainer hideProgressBar={true} />
     </section>
   );
-}
+};
+
+export default Passwordless;

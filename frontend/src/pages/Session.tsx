@@ -1,13 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import Link from "next/link";
+import { useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 
-export default function Session() {
+const Session: React.FC = () => {
   const [username, setUsername] = useState<string>("");
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleSignup = async () => {
     try {
@@ -20,9 +19,9 @@ export default function Session() {
       });
 
       if (res.ok) {
-        router.push("/pages/authenticated?title=Session Auth");
+        navigate("/pages/authenticated?title=Session Auth");
       } else {
-        router.push("/pages/failed?title=Session");
+        navigate("/pages/failed?title=Session");
       }
     } catch (error) {
       console.error("Session Auth Signup Error:", error);
@@ -31,12 +30,17 @@ export default function Session() {
 
   return (
     <main className="custom-container">
-      <div className=" headers">
-        <Link href="/">← Go back home</Link>
-        <Link href="/pages/authenticated">Try authenticated page →</Link>
+      <div className="headers">
+        <button onClick={() => navigate("/")}>← Go back home</button>
+        <button onClick={() => navigate("/pages/authenticated")}>
+          Try authenticated page →
+        </button>
       </div>
 
-      <h3><AiOutlineUser />Session Auth</h3>
+      <h3>
+        <AiOutlineUser />
+        Session Auth
+      </h3>
       <input
         type="text"
         placeholder="Enter Username"
@@ -49,4 +53,6 @@ export default function Session() {
       </div>
     </main>
   );
-}
+};
+
+export default Session;

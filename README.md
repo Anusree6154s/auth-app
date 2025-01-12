@@ -4,7 +4,7 @@ To study diff auth methods
 
 ### Teachstack
 
-1. **Framework**: NodeJS, ExpressJS, TypeScript
+1. **Framework**: NodeJS, ExpressJS, TypeScript, ReactJS
 2. **Authentication**: Passport, JsonWebToken, OpenID Connect, Express Session
 3. **Others**: Redis, Nodemailer, Cors
 
