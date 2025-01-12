@@ -11,9 +11,9 @@ import configurePassport from "./util/passportConfig";
 const app = express();
 
 if (env === "production") {
-  app.use(express.static(path.resolve(__dirname, "../../frontend/build")));
+  app.use(express.static(path.resolve(__dirname, "../../../frontend/build")));
 } else {
-  app.use(express.static(path.resolve(__dirname, "../frontend/build")));
+  app.use(express.static(path.resolve(__dirname, "../../frontend/build")));
 }
 
 app.use(express.json());
@@ -37,11 +37,13 @@ app.use("/auth", authRoutes); //routes
 
 if (env === "production") {
   app.use("/", (_, res) =>
-    res.sendFile(path.resolve(__dirname, "../../frontend/build", "index.html"))
+    res.sendFile(
+      path.resolve(__dirname, "../../../frontend/build", "index.html")
+    )
   );
 } else {
   app.use("/", (_, res) =>
-    res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"))
+    res.sendFile(path.resolve(__dirname, "../../frontend/build", "index.html"))
   );
 }
 
