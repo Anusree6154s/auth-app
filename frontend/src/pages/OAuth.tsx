@@ -1,10 +1,8 @@
 import React from "react";
 import {
   FaFacebook,
-  FaGithub,
   FaGoogle,
-  FaKey,
-  FaTwitter,
+  FaKey
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
