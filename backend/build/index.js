@@ -13,7 +13,7 @@ const routes_1 = __importDefault(require("./routes"));
 const passportConfig_1 = __importDefault(require("./util/passportConfig"));
 const app = (0, express_1.default)();
 if (constants_1.env === "production") {
-    app.use(express_1.default.static(path_1.default.resolve(__dirname, "../../../frontend/build")));
+    app.use(express_1.default.static(path_1.default.resolve(__dirname, "../../frontend/build")));
 }
 else {
     app.use(express_1.default.static(path_1.default.resolve(__dirname, "../../frontend/build")));
@@ -33,7 +33,7 @@ app.use(passport_1.default.session()); //initalise sessions for cookie mgmt
 (0, passportConfig_1.default)(); //passport config
 app.use("/auth", routes_1.default); //routes
 if (constants_1.env === "production") {
-    app.use("/", (_, res) => res.sendFile(path_1.default.resolve(__dirname, "../../../frontend/build", "index.html")));
+    app.use("/", (_, res) => res.sendFile(path_1.default.resolve(__dirname, "../../frontend/build", "index.html")));
 }
 else {
     app.use("/", (_, res) => res.sendFile(path_1.default.resolve(__dirname, "../../frontend/build", "index.html")));
