@@ -25,7 +25,7 @@ const OAuth: React.FC = () => {
       <div className="buttons">
         {/* https://stackoverflow.com/questions/72382892/access-to-fetch-at-https-accounts-google-com-o-oauth2-v2-auth-has-been-blocked */}
         <a
-          href="http://localhost:8000/auth/oauth/google"
+          href="/auth/oauth/google"
           className="flex gap-4 items-center"
         >
           <FaGoogle /> Login with Google
