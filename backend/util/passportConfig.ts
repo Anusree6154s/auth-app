@@ -14,7 +14,7 @@ import {
   google_client_secret,
   twitter_api_key,
   twitter_api_secret,
-} from "../../config/constants";
+} from "../config/constants";
 
 function configurePassport() {
   // Configure Google OAuth strategy

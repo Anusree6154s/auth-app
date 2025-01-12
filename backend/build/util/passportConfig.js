@@ -19,7 +19,7 @@ const passport_github_1 = require("passport-github");
 const passport_google_oauth20_1 = require("passport-google-oauth20");
 const passport_openidconnect_1 = __importDefault(require("passport-openidconnect"));
 const passport_twitter_1 = require("passport-twitter");
-const constants_1 = require("../../config/constants");
+const constants_1 = require("../config/constants");
 function configurePassport() {
     // Configure Google OAuth strategy
     passport_1.default.use(new passport_google_oauth20_1.Strategy({
