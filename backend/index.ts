@@ -4,13 +4,13 @@ import session from "express-session";
 import passport from "passport";
 
 import path from "path";
-import { session_secret } from "./config/constants";
+import { port, session_secret } from "./config/constants";
 import authRoutes from "./routes";
 import configurePassport from "./util/passportConfig";
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, "../frontend/build")));
+app.use(express.static(path.resolve(process.cwd(), "../frontend/build")));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,9 +31,9 @@ configurePassport(); //passport config
 
 app.use("/auth", authRoutes); //routes
 app.use("/", (_, res) =>
-  res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"))
+  res.sendFile(path.resolve(process.cwd(), "../frontend/build", "index.html"))
 );
 
-app.listen(8000, () => {
-  console.log("Server listening on port 8000");
+app.listen(port, () => {
+  console.log("Server listening on port " + port);
 });
