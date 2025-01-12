@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const basicauth_routes_1 = __importDefault(require("./basicauth.routes"));
+const jwt_routes_1 = __importDefault(require("./jwt.routes"));
+const oauth_routes_1 = __importDefault(require("./oauth.routes"));
+const oidc_routes_1 = __importDefault(require("./oidc.routes"));
+const passwordless_routes_1 = __importDefault(require("./passwordless.routes"));
+const session_routes_1 = __importDefault(require("./session.routes"));
+const mtls_routes_1 = __importDefault(require("./mtls.routes"));
+const router = express_1.default.Router();
+router.use("/basicauth", basicauth_routes_1.default);
+router.use("/oauth", oauth_routes_1.default);
+router.use("/jwt", jwt_routes_1.default);
+router.use("/session", session_routes_1.default);
+router.use("/passwordless", passwordless_routes_1.default);
+router.use("/oidc", oidc_routes_1.default);
+router.use("/mtls", mtls_routes_1.default);
+exports.default = router;
