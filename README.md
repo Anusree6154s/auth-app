@@ -22,4 +22,10 @@ To study diff auth methods
 Notes: [notes](./notes)
 
 ### Progress Updates
-[] Add deployed urls in oauth providers
+- [ ] Add deployed urls in oauth providers
+- [ ] Debug JWT based auth
+
+### Demo
+
+https://github.com/user-attachments/assets/04e7f79b-77b6-4382-9507-b08ee8cdb012
+
