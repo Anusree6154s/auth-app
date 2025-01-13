@@ -8,7 +8,7 @@ router.get("/login", passport.authenticate("openidconnect"));
 router.get(
   "/callback",
   passport.authenticate("openidconnect", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=OpenID Connect Auth",
     failureRedirect: "/pages/failed",
   })
 );

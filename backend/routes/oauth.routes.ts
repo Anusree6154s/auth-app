@@ -16,7 +16,7 @@ router.get("/github", passport.authenticate("github"));
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Google Auth",
     failureRedirect: "/pages/failed",
   })
 );
@@ -24,7 +24,7 @@ router.get(
 router.get(
   "/facebook/callback",
   passport.authenticate("facebook", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Facebook Auth",
     failureRedirect: "/pages/failed",
   })
 );
@@ -32,7 +32,7 @@ router.get(
 router.get(
   "/twitter/callback",
   passport.authenticate("twitter", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Twitter Auth",
     failureRedirect: "/pages/failed",
   })
 );
@@ -40,7 +40,7 @@ router.get(
 router.get(
   "/github/callback",
   passport.authenticate("github", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Github Auth",
     failureRedirect: "/pages/failed",
   })
 );
