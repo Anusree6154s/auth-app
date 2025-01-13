@@ -19,7 +19,7 @@ To study diff auth methods
 
 - For each of the authentication method 3 routes are made: Signup/Signin, Checkauth and logout
 
-Notes: [notes.md](./notes.md)
+Notes: [notes](./notes)
 
 ### Progress Updates
 [] Add deployed urls in oauth providers
