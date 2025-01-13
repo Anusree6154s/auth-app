@@ -1,8 +1,10 @@
 import React from "react";
 import {
   FaFacebook,
+  FaGithub,
   FaGoogle,
-  FaKey
+  FaKey,
+  FaTwitter
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -36,8 +38,7 @@ const OAuth: React.FC = () => {
         >
           <FaFacebook /> Login with Facebook
         </a>
-        {/* redirect uris not changed for these below */}
-        {/* <a
+        <a
           href="/auth/oauth/twitter"
           className="flex gap-4 items-center"
         >
@@ -48,7 +49,7 @@ const OAuth: React.FC = () => {
           className="flex gap-4 items-center"
         >
           <FaGithub /> Login with Github
-        </a> */}
+        </a>
       </div>
     </section>
   );
