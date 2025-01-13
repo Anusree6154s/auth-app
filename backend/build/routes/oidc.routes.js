@@ -8,7 +8,7 @@ const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
 router.get("/login", passport_1.default.authenticate("openidconnect"));
 router.get("/callback", passport_1.default.authenticate("openidconnect", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=OpenID Connect Auth",
     failureRedirect: "/pages/failed",
 }));
 router.get("/check-auth", (req, res) => {

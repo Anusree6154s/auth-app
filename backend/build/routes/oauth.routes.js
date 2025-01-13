@@ -12,19 +12,19 @@ router.get("/twitter", passport_1.default.authenticate("twitter"));
 router.get("/github", passport_1.default.authenticate("github"));
 // Google OAuth callback route
 router.get("/google/callback", passport_1.default.authenticate("google", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Google Auth",
     failureRedirect: "/pages/failed",
 }));
 router.get("/facebook/callback", passport_1.default.authenticate("facebook", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Facebook Auth",
     failureRedirect: "/pages/failed",
 }));
 router.get("/twitter/callback", passport_1.default.authenticate("twitter", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Twitter Auth",
     failureRedirect: "/pages/failed",
 }));
 router.get("/github/callback", passport_1.default.authenticate("github", {
-    successRedirect: "/pages/authenticated",
+    successRedirect: "/pages/authenticated?title=Github Auth",
     failureRedirect: "/pages/failed",
 }));
 router.get("/check-auth", (req, res) => {
