@@ -32,6 +32,7 @@ To study diff auth methods
   - while using diff frontend andb backend hosts only if both have https
   - only if frontend and baclemd are on same site(using nginx proxy or setting express.static())
   - _we are using express.static() method to access frontend files via backend_ [in vanilla html]
+- refer [this](./oauth-oidc.md) for oauth apps url configurations
 
 - **Tips**:
   - use `<base href="http://localhost:8000">` in html head to avoid rewriting baseurl in html (while accessing frontend files via backend express.static()) [in case of vanilla html]
