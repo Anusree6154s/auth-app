@@ -37,9 +37,7 @@ app.use("/auth", authRoutes); //routes
 
 if (env === "production") {
   app.use("/", (_, res) =>
-    res.sendFile(
-      path.resolve(__dirname, "../../frontend/build", "index.html")
-    )
+    res.sendFile(path.resolve(__dirname, "../../frontend/build", "index.html"))
   );
 } else {
   app.use("/", (_, res) =>
@@ -50,3 +48,5 @@ if (env === "production") {
 app.listen(port, () => {
   console.log("Server listening on port " + port);
 });
+
+module.exports = app;
