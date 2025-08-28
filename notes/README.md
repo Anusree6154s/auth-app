@@ -6,15 +6,16 @@ To study diff auth methods
 
 ### Table of Contents
 
-1. Basic Auth
-2. OAuth based auth
-3. JWT token based auth
-4. Session based auth
-5. Passwordless auth
-6. Open ID Connect (OIDC) based auth
-7. mTLS based auth
-8. Deployment
-9. Choice of Techstack
+1. [Basic Auth](#1-basic-auth)
+2. [OAuth based auth](#2-oauth)
+3. [JWT token based auth](#3-jwt)
+4. [Session based auth](#4-session-based)
+5. [Passwordless auth](#5-passwordless)
+6. [Open ID Connect (OIDC) based auth](#6-openid-connect)
+7. [mTLS based auth](#7-mtls-mutual-transport-layer-security-not-implemented-completely-cause-of-minor-errors)
+8. [Deployment](#8-deployment)
+9. [Choice of Techstack](#9-choice-of-techstack)
+10. [Why server cannot be migrated from render to vercel](#10-why-server-cannot-be-migrated-from-render-to-vercel)
 
 ### 1. Basic Auth
 
@@ -32,6 +33,7 @@ To study diff auth methods
   - while using diff frontend andb backend hosts only if both have https
   - only if frontend and baclemd are on same site(using nginx proxy or setting express.static())
   - _we are using express.static() method to access frontend files via backend_ [in vanilla html]
+
 - refer [this](./oauth-oidc.md) for oauth apps url configurations
 
 - **Tips**:
@@ -100,7 +102,7 @@ To study diff auth methods
 - Durig deployment, there is this whole mess. Checkout all changes I've made so far, all the minor fix commits to get an idea.
 - Express session does indeed not work with frontend and backend on diff servers.
   - During development it worked because the browser confused the host(localhost) of both port 8000 and 3000 as it is coming from same domain.
-  - Added diff frontend host url as below in .env file of react to change hostname and it stopped co-operating with express-session 
+  - Added diff frontend host url as below in .env file of react to change hostname and it stopped co-operating with express-session
   ```bash
   HOST=frontend.local
   ```
@@ -108,7 +110,7 @@ To study diff auth methods
 - Render is horrible at building and starting the server by itself for frontend as well as backend (as I've seen so far).
   - Therefore I'm building the build files in both frontend and backend before commiting and pushing the build folders to github
   - In render I just start the backend server
-- Rememeber for OAuth authentication always need to update the redirect urls in case you plan to host the server in any other website. 
+- Rememeber for OAuth authentication always need to update the redirect urls in case you plan to host the server in any other website.
   - Also update the env variables accordingly
 
 ### 9. Choice of Techstack
@@ -116,3 +118,41 @@ To study diff auth methods
 - ReactJS because of not able to use express-session
   - NextSJ was the first choice in order to learn the techstack. But express-session was not letting me set cookies in frontend because of cross-origin. (couldnt find a simple solution in neither stackoverflow nor gpt)
   - So now im serving react build files directly from server
+
+### 10. Why server cannot be migrated from render to vercel
+- tldr: native redis uses tcp connection. not good with serverless
+
+🔹 1. Native Redis TCP connection (`rediss://...`)
+
+- The Node.js Redis client (`redis`, `ioredis`) uses **TCP sockets**.
+- Serverless platforms don’t keep long-lived connections open (every request spins up a new function, then shuts down).
+- This means:
+
+  - Your function will reconnect to Redis on **every invocation**.
+  - Connection overhead = slower + can hit Upstash connection limits.
+  - Still works, but **not very efficient**.
+    🔹 2. Upstash **REST API** (recommended for serverless)
+
+- Upstash provides an **HTTP/HTTPS REST API**.
+- This works perfectly with serverless because:
+
+  - No persistent connections needed.
+  - Every request is just a stateless HTTPS call.
+  - Scales naturally with serverless execution model.
+
+👉 Example:
+
+```js
+const response = await fetch(`https://<your-db-name>.upstash.io/get/myKey`, {
+  headers: {
+    Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+  },
+});
+const data = await response.json();
+console.log(data);
+```
+
+🔹 So the rule of thumb:
+
+- **Serverful apps (long-running servers, workers, VMs, Docker)** → use `rediss://` with `redis` or `ioredis`.
+- **Serverless apps (Vercel, Netlify, AWS Lambda, Cloudflare Workers, etc.)** → use **Upstash REST API**.
